@@ -1,0 +1,47 @@
+# syntax = denzp/cargo-wharf-frontend:v0.1.0-alpha.2
+[package]
+name = "osrm-wrapper"
+version = "0.1.0"
+authors = ["Nguyen Ngoc Hung <hungnn@ahamove.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rocket = "0.4.5"
+rocket_contrib = "0.4.5"
+rocket_codegen = "0.4.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.56"
+serde_derive = "1.0.114"
+geo = "0.14.1"
+polyline = "0.8.0"
+geo-types = "0.6.0"
+reqwest = { version = "0.10", features = ["blocking", "json"] }
+
+[package.metadata.wharf.builder]
+image = "clux/muslrust:nightly"
+target = "x86_64-unknown-linux-musl"
+
+[package.metadata.wharf.output]
+image = "alpine"
+workdir = "/"
+entrypoint = ["/usr/local/bin/osrm-wrapper"]
+expose = ["8000"]
+
+[package.metadata.wharf.output.env]
+"ROCKET_WORKERS" = "10"
+"ROCKET_KEEP_ALIVE" = "5"
+"ROCKET_LOG"= "critical"
+"ROCKET_SECRET_KEY" = "jnfgAN2NhORuIWLhCcikKhjwcuOCSd87funBphuoKxk="
+"ROCKET_OSRM_URL_DEFAULT" = ""
+"ROCKET_VIETBANDO_API_KEY" = ""
+"ROCKET_VIETBANDO_URL" = "http://developers.vietbando.com/V2/service/PartnerPortalService.svc/rest/ViaRoute"
+"ROCKET_LIMIT_TIMEOUT" = "300"
+"ROCKET_DEFAULT_SOURCE" = ""
+"ROCKET_GOOGLE_URL" = "https://maps.googleapis.com/maps/api/directions/json"
+"ROCKET_GOOGLE_API_KEY" = ""
+
+[[package.metadata.wharf.binary]]
+name = "osrm-wrapper"
+destination = "/usr/local/bin/osrm-wrapper"
